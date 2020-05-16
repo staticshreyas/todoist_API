@@ -1,5 +1,6 @@
 <?php
-class User{
+include_once 'admin.php';
+class User extends Admin {
 
     private $conn;
     private $table_name = "user_tbl";
@@ -9,6 +10,8 @@ class User{
     public $email;
     public $password;
     public $image;
+    public $admin;
+    public $status;
 
     // constructor
     public function __construct($db){
@@ -17,6 +20,10 @@ class User{
 
 // create new user record
     function create(){
+        $this->admin = new Admin($this->conn);
+        $this->admin->adminusername = "admin1";
+        $this->admin->adminpassword = "abc";
+
 
         // insert query
         $query = "INSERT INTO " . $this->table_name . "
@@ -46,6 +53,28 @@ class User{
 
         // execute the query, also check if query was successful
         if($stmt->execute()){
+            $query = "SELECT id FROM ". $this->table_name ;
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->admin->uid = $row['id'];
+            if(!empty($this->admin->uid) && $this->admin->admin_create()){
+
+                //Response code
+                http_response_code(200);
+
+                echo json_encode(array("message" => "New Admin Record was created."));
+            }
+
+            else{
+
+                //Response code
+                http_response_code(400);
+
+                echo json_encode(array("message" => "Unable to create admin record."));
+            }
+
+
             return true;
         }
 
@@ -136,6 +165,34 @@ class User{
         $stmt->bindParam(':id', $this->id);
 
         // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
+
+    // Star task task record
+    function status_update()
+    {
+
+        // insert query
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                status = :status
+            WHERE id = :id";
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->status = htmlspecialchars(strip_tags($this->status));
+
+        // bind the values
+        $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query, also check if query was successful
         if($stmt->execute()){
             return true;
         }

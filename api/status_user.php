@@ -11,13 +11,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 //Files for DB
 include_once 'config/database.php';
 include_once 'objects/user.php';
-include_once 'objects/admin.php';
-
+include_once 'objects/tasks.php';
 
 //Database Connection
 $database = new Database();
 $db = $database->getConnection();
-
 
 $user = new User($db);
 
@@ -25,25 +23,18 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
 
 
-$user->username = $data->username;
-$user->email = $data->email;
-$user->password = $data->password;
-$user->image = $data->image;
+$user->status = $data->status;
+$user->id = $data->id;
 
-
-//Creating User
+//Changing status
 if(
-    !empty($user->username) &&
-    !empty($user->email) &&
-    !empty($user->password) &&
-    !empty($user->image) &&
-    $user->create()
+    $user->status == 0 &&
+    $user->status_update()
 ){
-
     //Response code
     http_response_code(200);
 
-    echo json_encode(array("message" => "User was created."));
+    echo json_encode(array("message" => "User was blocked"));
 }
 
 else{
@@ -51,8 +42,6 @@ else{
     //Response code
     http_response_code(400);
 
-    echo json_encode(array("message" => "Unable to create user."));
+    echo json_encode(array("message" => "Unable to block User."));
 }
 ?>
-
-
