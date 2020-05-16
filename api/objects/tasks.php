@@ -131,6 +131,33 @@ class Tasks
         return false;
     }
 
+    // Complete task task record
+    function update()
+    {
+
+        // insert query
+        $query = "UPDATE " . $this->table_name . "
+        SET
+           task = :task  
+        WHERE id = :id";
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // bind the values
+        $stmt->bindParam(':task', $this->task);
+
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query, also check if query was successful
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 
 
