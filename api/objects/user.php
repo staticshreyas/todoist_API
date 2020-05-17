@@ -53,7 +53,7 @@ class User extends Admin {
 
         // execute the query, also check if query was successful
         if($stmt->execute()){
-            $query = "SELECT id FROM ". $this->table_name ;
+            $query = "SELECT id FROM ". $this->table_name . " ORDER BY ID DESC LIMIT 1 " ;
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
