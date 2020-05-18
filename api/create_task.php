@@ -37,7 +37,12 @@ if(
     //Response code
     http_response_code(200);
 
-    echo json_encode(array("message" => "Task was created."));
+    echo json_encode(array(
+        "message" => "Task was created.",
+        "task" => $task->task,
+        "Date & Time" => $task->datetime,
+        "User ID" => $task->uid
+    ));
 }
 
 else{

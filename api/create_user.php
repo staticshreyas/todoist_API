@@ -31,27 +31,35 @@ $user->password = $data->password;
 $user->image = $data->image;
 
 
+$email_exists = $user->emailExists();
+
+if(!$email_exists) {
+
+
 //Creating User
-if(
-    !empty($user->username) &&
-    !empty($user->email) &&
-    !empty($user->password) &&
-    !empty($user->image) &&
-    $user->create()
-){
+    if (
+        !empty($user->username) &&
+        !empty($user->email) &&
+        !empty($user->password) &&
+        !empty($user->image) &&
+        $user->create()
+    ) {
 
-    //Response code
-    http_response_code(200);
+        //Response code
+        http_response_code(200);
 
-    echo json_encode(array("message" => "User was created."));
+        echo json_encode(array("message" => "User was created."));
+    } else {
+
+        //Response code
+        http_response_code(400);
+
+        echo json_encode(array("message" => "Unable to create user."));
+    }
 }
-
 else{
-
-    //Response code
     http_response_code(400);
-
-    echo json_encode(array("message" => "Unable to create user."));
+    echo json_encode(array("message" => "Email Already Exists."));
 }
 ?>
 

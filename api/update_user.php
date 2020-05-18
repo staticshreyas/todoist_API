@@ -47,42 +47,49 @@ if($jwt){
         $user->password = $data->password;
         $user->id = $decoded->data->id;
 
+        $email_exists = $user->emailExists();
+        if(!$email_exists) {
+
+
 // update the user record
-        if($user->update()){
+            if ($user->update()) {
 // we need to re-generate jwt because user details might be different
-            $token = array(
-                "iss" => $iss,
-                "aud" => $aud,
-                "iat" => $iat,
-                "nbf" => $nbf,
-                "data" => array(
-                    "id" => $user->id,
-                    "username" => $user->username,
-                    "image" => $user->image,
-                    "email" => $user->email
-                )
-            );
-            $jwt = JWT::encode($token, $key);
+                $token = array(
+                    "iss" => $iss,
+                    "aud" => $aud,
+                    "iat" => $iat,
+                    "nbf" => $nbf,
+                    "data" => array(
+                        "id" => $user->id,
+                        "username" => $user->username,
+                        "image" => $user->image,
+                        "email" => $user->email
+                    )
+                );
+                $jwt = JWT::encode($token, $key);
 
 // set response code
-            http_response_code(200);
+                http_response_code(200);
 
 // response in json format
-            echo json_encode(
-                array(
-                    "message" => "User was updated.",
-                    "jwt" => $jwt
-                )
-            );
-        }
+                echo json_encode(
+                    array(
+                        "message" => "User was updated.",
+                        "jwt" => $jwt
+                    )
+                );
+            } // message if unable to update user
+            else {
+                // set response code
+                http_response_code(401);
 
-// message if unable to update user
-        else{
-            // set response code
-            http_response_code(401);
+                // show error message
+                echo json_encode(array("message" => "Unable to update user."));
+            }
+        }else{
+            http_response_code(400);
+            echo json_encode(array("message" => "Email Already Exists."));
 
-            // show error message
-            echo json_encode(array("message" => "Unable to update user."));
         }
 
 // if decode fails, it means jwt is invalid
@@ -98,7 +105,6 @@ if($jwt){
         ));
     }
 }
-
 // show error message if jwt is empty
 else{
 

@@ -26,6 +26,7 @@ $data = json_decode(file_get_contents("php://input"));
 $task->task = $data->task;
 $task->id = $data->id;
 
+
 //Creating Task
 if(
     !empty($task->task) &&
