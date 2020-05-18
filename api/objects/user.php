@@ -1,5 +1,6 @@
 <?php
 include_once 'admin.php';
+include_once 'user.php';
 class User extends Admin {
 
     private $conn;
@@ -199,5 +200,69 @@ class User extends Admin {
 
         return false;
     }
+
+    function getAllTasks(){
+        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid";
+
+        $stmt = $this->conn->prepare( $query );
+
+        $this->status = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':uid', $this->id);
+
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "allTasksOfUser" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllCompletedTasks(){
+        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid AND status = '1' ";
+
+        $stmt = $this->conn->prepare( $query );
+
+        $this->status = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':uid', $this->id);
+
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "allCompletedTasksOfUser" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllStarredTasks(){
+        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid AND priority = '1' ";
+
+        $stmt = $this->conn->prepare( $query );
+
+        $this->status = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':uid', $this->id);
+
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "allStarredTasksOfUser" => $num,
+            "data" => $rows
+        ));
+
+    }
+
 
 }

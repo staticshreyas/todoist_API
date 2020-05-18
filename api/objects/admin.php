@@ -1,4 +1,7 @@
 <?php
+include_once 'user.php';
+include_once 'tasks.php';
+
 class Admin{
 
     private $conn;
@@ -92,6 +95,74 @@ class Admin{
         // return false if username does not exist in the database
         return false;
     }
+
+    function getAllUsers(){
+        $query = "SELECT id, username, image, status FROM user_tbl";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "totalUsers" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllBlockedUsers(){
+        $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '0' ";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "blockedUsers" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllUblockedUsers(){
+        $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '1' ";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "unblockedUsers" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllTasks(){
+        $query = " SELECT id, task, date_time FROM task_tbl ";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "allTasks" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+    function getAllCompletedTasks(){
+        $query = " SELECT id, task, date_time FROM task_tbl WHERE status = '1' ";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(array(
+            "allCompletedTasks" => $num,
+            "data" => $rows
+        ));
+
+    }
+
+
+
 
 
 
