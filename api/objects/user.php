@@ -202,7 +202,7 @@ class User extends Admin {
     }
 
     function getAllTasks(){
-        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid";
+        $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid";
 
         $stmt = $this->conn->prepare( $query );
 
@@ -223,7 +223,7 @@ class User extends Admin {
     }
 
     function getAllCompletedTasks(){
-        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid AND status = '1' ";
+        $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid AND status = '1' ";
 
         $stmt = $this->conn->prepare( $query );
 
@@ -244,7 +244,7 @@ class User extends Admin {
     }
 
     function getAllStarredTasks(){
-        $query = " SELECT id, task, date_time FROM task_tbl WHERE uid = :uid AND priority = '1' ";
+        $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid AND priority = '1' ";
 
         $stmt = $this->conn->prepare( $query );
 
