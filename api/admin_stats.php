@@ -20,12 +20,27 @@ $admin = new Admin($db);
 // get posted data
 //$data = json_decode(file_get_contents("php://input"));
 
-echo "User Stats";
 $admin->getAllUsers();
 $admin->getAllBlockedUsers();
 $admin->getAllUblockedUsers();
 
 
-echo "Task Stats";
 $admin->getAllTasks();
 $admin->getAllCompletedTasks();
+
+echo json_encode(array(
+    "allUsers" => $admin->allUsersNum,
+    "allUsersdata" => $admin->allUsersRows,
+
+    "allBlockedUsers" => $admin->blockedNum,
+    "allBLockedUsersdata" => $admin->blockedRows,
+
+    "allUnblockedUsers" => $admin->unblockedNum,
+    "allUnblockedUsersdata" => $admin->unblockedRows,
+
+    "allTasks" => $admin->allTasksNum,
+    "allTasksdata" => $admin->allTasksRows,
+
+    "allCompletedTasks" => $admin->allCompletedTasksNum,
+    "allCompletedTasksdata" => $admin->allCompletedTasksRows,
+));

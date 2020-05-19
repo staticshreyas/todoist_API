@@ -12,6 +12,18 @@ class Admin{
     public $adminpassword;
     public $uid;
 
+    //Fetch data
+    public $allUsersNum;
+    public $allUsersRows;
+    public $blockedNum;
+    public $blockedRows;
+    public $unblockedNum;
+    public $unblockedRows;
+    public $allTasksNum;
+    public $allTasksRows;
+    public $allCompletedTasksNum;
+    public $allCompletedTasksRows;
+
     // constructor
     public function __construct($db){
         $this->conn = $db;
@@ -100,12 +112,13 @@ class Admin{
         $query = "SELECT id, username, image, status FROM user_tbl";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->allUsersNum = $stmt->rowCount();
+        $this->allUsersRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "totalUsers" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
@@ -113,12 +126,13 @@ class Admin{
         $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '0' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->blockedNum = $stmt->rowCount();
+        $this->blockedRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "blockedUsers" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
@@ -126,38 +140,41 @@ class Admin{
         $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '1' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->unblockedNum = $stmt->rowCount();
+        $this->unblockedRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "unblockedUsers" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
     function getAllTasks(){
-        $query = " SELECT id, task, date_time FROM task_tbl ";
+        $query = " SELECT id, task, date_time, priority, status FROM task_tbl ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->allTasksNum = $stmt->rowCount();
+        $this->allTasksRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "allTasks" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
     function getAllCompletedTasks(){
-        $query = " SELECT id, task, date_time FROM task_tbl WHERE status = '1' ";
+        $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE status = '1' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->allCompletedTasksNum = $stmt->rowCount();
+        $this->allCompletedTasksRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+       /* echo json_encode(array(
             "allCompletedTasks" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 

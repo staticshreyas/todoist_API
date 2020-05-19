@@ -14,6 +14,14 @@ class User extends Admin {
     public $admin;
     public $status;
 
+    //Fetch data
+    public $allNum;
+    public $allRows;
+    public $completedNum;
+    public $completedRows;
+    public $starredNum;
+    public $starredRows;
+
     // constructor
     public function __construct($db){
         $this->conn = $db;
@@ -213,12 +221,13 @@ class User extends Admin {
 
         $stmt->execute();
 
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->allNum = $stmt->rowCount();
+        $this->allRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+       /* echo json_encode(array(
             "allTasksOfUser" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
@@ -234,12 +243,13 @@ class User extends Admin {
 
         $stmt->execute();
 
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->completedNum = $stmt->rowCount();
+        $this->completedRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "allCompletedTasksOfUser" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 
@@ -255,12 +265,13 @@ class User extends Admin {
 
         $stmt->execute();
 
-        $num = $stmt->rowCount();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(array(
+        $this->starredNum = $stmt->rowCount();
+        $this->starredRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /*echo json_encode(array(
             "allStarredTasksOfUser" => $num,
             "data" => $rows
-        ));
+        ));*/
 
     }
 

@@ -22,13 +22,19 @@ $data = json_decode(file_get_contents("php://input"));
 
 $user->id = $data->uid;
 
-/*echo "User Stats";
-$admin->getAllUsers();
-$admin->getAllBlockedUsers();
-$admin->getAllUblockedUsers();*/
 
-
-echo "Task Stats";
 $user->getAllTasks();
 $user->getAllCompletedTasks();
 $user->getAllStarredTasks();
+
+echo json_encode(array(
+    "allTasksOfUser" => $user->allNum,
+    "allTasksdata" => $user->allRows,
+
+    "completedTasksOfUser" => $user->completedNum,
+    "completedTasksdata" => $user->completedRows,
+
+    "starredTasksOfUser" => $user->starredNum,
+    "starredTasksdata" => $user->starredRows
+
+));
