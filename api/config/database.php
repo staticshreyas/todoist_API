@@ -17,7 +17,7 @@ class Database{
 
         try{
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=".$this->charset, $this->username, $this->password);
-            echo "DB Connected.";
+            echo "DB Connected.\n";
         }catch(PDOException $exception){
             echo "Connection error: " . $exception->getMessage();
         }

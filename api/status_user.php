@@ -37,11 +37,22 @@ if(
     echo json_encode(array("message" => "User was blocked"));
 }
 
+else if(
+    $user->status == 1 &&
+    $user->status_update()
+){
+    http_response_code(200);
+
+    echo json_encode(array("message" => "User was unblocked"));
+
+}
+
+
 else{
 
     //Response code
     http_response_code(400);
 
-    echo json_encode(array("message" => "Unable to block User."));
+    echo json_encode(array("message" => "Unable to block or unblock User."));
 }
 ?>
