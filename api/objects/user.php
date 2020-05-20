@@ -134,6 +134,33 @@ class User extends Admin {
         return false;
     }
 
+    public function blockStatus()
+    {
+        $query = "SELECT status FROM user_tbl WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id=htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->status = $row['status'];
+
+        if($this->status == 1){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+
+
+    }
+
 
 // update a user record
     public function update(){

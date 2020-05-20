@@ -23,6 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
 // set product property values
 $user->email = $data->email;
 $email_exists = $user->emailExists();
+$blockStatus = $user->blockStatus();
 
 //Files required for web token
 include_once 'config/core.php';
@@ -34,32 +35,43 @@ use \Firebase\JWT\JWT;
 
 // check if email exists and if password is correct
 if($email_exists && password_verify($data->password, $user->password)){
+    if($blockStatus){
+        // set response code
+        http_response_code(401);
 
-    $token = array(
-        "iss" => $iss,
-        "aud" => $aud,
-        "iat" => $iat,
-        "nbf" => $nbf,
-        "data" => array(
-            "id" => $user->id,
-            "username" => $user->username,
-            "image" => $user->image,
-            "email" => $user->email
-        )
-    );
+        // tell the user login failed
+        echo json_encode(array("message" => "User Blocked."));
 
-    // set response code
-    http_response_code(200);
+    }
+    else{
+        $token = array(
+            "iss" => $iss,
+            "aud" => $aud,
+            "iat" => $iat,
+            "nbf" => $nbf,
+            "data" => array(
+                "id" => $user->id,
+                "username" => $user->username,
+                "image" => $user->image,
+                "email" => $user->email
+            )
+        );
 
-    // generate jwt
-    $jwt = JWT::encode($token, $key);
-    echo json_encode(
-        array(
-            "message" => "Successful login.",
-            "username" => $user->username,
-            "jwt" => $jwt
-        )
-    );
+        // set response code
+        http_response_code(200);
+
+        // generate jwt
+        $jwt = JWT::encode($token, $key);
+        echo json_encode(
+            array(
+                "message" => "Successful login.",
+                "username" => $user->username,
+                "jwt" => $jwt
+            )
+        );
+    }
+
+
 
 }
 
