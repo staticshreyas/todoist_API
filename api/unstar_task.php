@@ -28,7 +28,7 @@ $task->id = $data->id;
 
 //Creating Task
 if(
-    !empty($task->priority) &&
+    $task->priority == 0 &&
     $task->unStar()
 ){
     //Response code

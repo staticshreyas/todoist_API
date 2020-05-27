@@ -4,9 +4,9 @@ class Database{
 
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "id13824238_auth_api";
-    private $username ="id13824238_admin";
-    private $password = "Z1y2x3w4-shreyas";
+    private $db_name = /*"id13824238_auth_api" ||*/ "auth_api";
+    private $username =/*"id13824238_admin" ||*/ "root";
+    private $password = /*"Z1y2x3w4-shreyas" ||*/ "root";
     private $charset = "utf8mb4";
     public $conn;
 
