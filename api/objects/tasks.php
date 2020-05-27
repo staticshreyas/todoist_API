@@ -78,6 +78,34 @@ class Tasks
         return false;
     }
 
+    // Star task task record
+    function unStar()
+    {
+
+        // insert query
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                priority = :priority
+            WHERE id = :id";
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->priority = htmlspecialchars(strip_tags($this->priority));
+
+        // bind the values
+        $stmt->bindParam(':priority', $this->priority);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query, also check if query was successful
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
+
 
 
 // Complete task task record

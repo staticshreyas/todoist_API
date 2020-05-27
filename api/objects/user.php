@@ -28,7 +28,7 @@ class User extends Admin {
     }
 
 // create new user record
-    function create(){
+    public function create(){
         $this->admin = new Admin($this->conn);
         $this->admin->adminusername = "admin1";
         $this->admin->adminpassword = "abc";
@@ -91,7 +91,7 @@ class User extends Admin {
     }
 
 // check if given email exist in the database
-    function emailExists(){
+    public function emailExists(){
 
         // query to check if email exists
         $query = "SELECT id, username, image, password
@@ -209,7 +209,7 @@ class User extends Admin {
     }
 
     // Star task task record
-    function status_update()
+    public function status_update()
     {
 
         // insert query
@@ -236,7 +236,7 @@ class User extends Admin {
         return false;
     }
 
-    function getAllTasks(){
+    public function getAllTasks(){
         $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid";
 
         $stmt = $this->conn->prepare( $query );
@@ -258,7 +258,7 @@ class User extends Admin {
 
     }
 
-    function getAllCompletedTasks(){
+    public function getAllCompletedTasks(){
         $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid AND status = '1' ";
 
         $stmt = $this->conn->prepare( $query );
@@ -280,7 +280,7 @@ class User extends Admin {
 
     }
 
-    function getAllStarredTasks(){
+    public function getAllStarredTasks(){
         $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE uid = :uid AND priority = '1' ";
 
         $stmt = $this->conn->prepare( $query );

@@ -30,7 +30,7 @@ class Admin{
     }
 
 // create new user record
-    function admin_create(){
+    public function admin_create(){
 
         // insert query
         $query = "INSERT INTO " . $this->table_name . "
@@ -65,7 +65,7 @@ class Admin{
     }
 
     // check if given username exist in the database
-    function usernameExists(){
+    public function usernameExists(){
 
         // query to check if email exists
         $query = "SELECT id, username, uid, password
@@ -108,8 +108,8 @@ class Admin{
         return false;
     }
 
-    function getAllUsers(){
-        $query = "SELECT id, username, image, status FROM user_tbl";
+    public function getAllUsers(){
+        $query = "SELECT id, username,email, image, status FROM user_tbl";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
         $this->allUsersNum = $stmt->rowCount();
@@ -122,8 +122,8 @@ class Admin{
 
     }
 
-    function getAllBlockedUsers(){
-        $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '0' ";
+    public function getAllBlockedUsers(){
+        $query = " SELECT id, username,email, image, status FROM user_tbl WHERE status = '0' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
         $this->blockedNum = $stmt->rowCount();
@@ -136,8 +136,8 @@ class Admin{
 
     }
 
-    function getAllUblockedUsers(){
-        $query = " SELECT id, username, image, status FROM user_tbl WHERE status = '1' ";
+    public function getAllUblockedUsers(){
+        $query = " SELECT id, username,email, image, status FROM user_tbl WHERE status = '1' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
         $this->unblockedNum = $stmt->rowCount();
@@ -150,7 +150,7 @@ class Admin{
 
     }
 
-    function getAllTasks(){
+    public function getAllTasks(){
         $query = " SELECT id, task, date_time, priority, status FROM task_tbl ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -164,7 +164,7 @@ class Admin{
 
     }
 
-    function getAllCompletedTasks(){
+    public function getAllCompletedTasks(){
         $query = " SELECT id, task, date_time, priority, status FROM task_tbl WHERE status = '1' ";
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

@@ -17,34 +17,24 @@ include_once 'objects/tasks.php';
 $database = new Database();
 $db = $database->getConnection();
 
-$user = new User($db);
+$task = new Tasks($db);
 
 //Post Data
 $data = json_decode(file_get_contents("php://input"));
 
 
-$user->status = $data->status;
-$user->id = $data->id;
+$task->priority = $data->priority;
+$task->id = $data->id;
 
-//Changing status
+//Creating Task
 if(
-    $user->status == 0 &&
-    $user->status_update()
+    !empty($task->priority) &&
+    $task->unStar()
 ){
     //Response code
     http_response_code(200);
 
-    echo json_encode(array("message" => "User was blocked"));
-}
-
-else if(
-    $user->status == 1 &&
-    $user->status_update()
-){
-    http_response_code(200);
-
-    echo json_encode(array("message" => "User was unblocked"));
-
+    echo json_encode(array("message" => "Task was Unstarred."));
 }
 
 else{
@@ -52,6 +42,6 @@ else{
     //Response code
     http_response_code(400);
 
-    echo json_encode(array("message" => "Unable to block or unblock User."));
+    echo json_encode(array("message" => "Unable to Unstar Task."));
 }
 ?>
